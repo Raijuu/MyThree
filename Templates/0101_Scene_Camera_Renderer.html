@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example 01 01 - Basic skeleton</title>
+	<script type="text/javascript"	src="js/threejs/three.68.js"></script>
+	<script type="text/javascript"	src="js/jquery/jquery-1.9.0.js"></script>
+	<style>
+		body{
+			/* set margin to 0 and overlow to hidden, to use the complete page */
+			margin: 0;
+			overflow:hidden;
+
+		}
+	</style>
+</head>
+<body>
+
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+
+	<!-- Javascript runs three.js examples -->
+	<script type="text/javascript">
+
+  //once everything is loaded, we run our three.js stuff.
+
+$( document ).ready( function() {
+
+  		// ************ create scene ********************
+
+      // Properties:  http://threejs.org/docs/#Reference/Scenes/Scene
+
+      // .fog -- A fog instance defining the type of fog that affects everything rendered in the scene. Default is null.
+      // .overrideMaterial -- If not null, it will force everything in the scene to be rendered with that material. Default is null.
+      // .autoUpdate -- Default is true. If set, then the renderer checks every frame if the scene and it's objects needs matrix updates. When it isn't, then you have to maintain all matrices in the scene yourself.
+  		var scene = new THREE.Scene();
+
+  		// ************** create camera ********************
+
+      // PerspectiveCamera (fov, aspect, near, far) http://threejs.org/docs/#Reference/Cameras/PerspectiveCamera
+
+      // fov — Camera frustum vertical field of view, from bottom to top of view, in degrees.
+      // aspect — Camera frustum aspect ratio, window width divided by window height.
+      // near — Camera frustum near plane. (USED FOR CLIPPING)
+      // far — Camera frustum far plane. (USED FOR CLIPPING)
+
+  		var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+  		// **************** create renderer ***********************
+
+      // WebGLRenderer     http://threejs.org/docs/#Reference/Renderers/WebGLRenderer
+      // parameters array
+      // canvas -- A Canvas where the renderer draws its output.
+      // precision — shader precision. Can be "highp", "mediump" or "lowp".
+      // alpha — Boolean, default is false.
+      // premultipliedAlpha — Boolean, default is true.
+      // antialias — Boolean, default is false.
+      // stencil — Boolean, default is true.
+      // preserveDrawingBuffer — Boolean, default is false.
+      // maxLights — Integer, default is 4.
+  		
+      //Properties
+
+      //.domElement -- A Canvas where the renderer draws its output. This is automatically created by the renderer in the constructor (if not provided already); you just need to add it to your page.
+      // .context -- The HTML5 Canvas's 'webgl' context obtained from the canvas where the renderer will draw.
+      // .autoClear -- Defines whether the renderer should automatically clear its output before rendering. 
+      // .autoClearColor -- If autoClear is true, defines whether the renderer should clear the color buffer. Default is true.
+      // .autoClearDepth -- If autoClear is true, defines whether the renderer should clear the depth buffer. Default is true.
+      // .autoClearStencil -- If autoClear is true, defines whether the renderer should clear the stencil buffer. Default is true.
+      // .sortObjects -- Defines whether the renderer should sort objects. Default is true.
+      // Note: Sorting is used to attempt to properly render objects that have some degree of transparency. By definition, sorting objects may not work in all cases. Depending on the needs of application, it may be neccessary to turn off sorting and use other methods to deal with transparency rendering e.g. manually determining the object rendering order.
+      // .autoUpdateObjects -- Defines whether the renderer should auto update objects. Default is true.
+      // .gammaInput -- Default is false. If set, then it expects that all textures and colors are premultiplied gamma.
+      // .gammaOutput -- Default is false. If set, then it expects that all textures and colors need to be outputted in premultiplied gamma.
+      // .shadowMapEnabled -- Default is false. If set, use shadow maps in the scene.
+      // .shadowMapAutoUpdate -- Default is true. If set, autoupdate the shadowmaps every frame.
+      // .shadowMapType -- Defines shadow map type (unfiltered, percentage close filtering, percentage close filtering with bilinear filtering in shader) Options are THREE.BasicShadowMap, THREE.PCFShadowMap, THREE.PCFSoftShadowMap. Default is THREE.PCFShadowMap.
+      // .shadowMapCullFace -- Default is THREE.CullFaceFront. The faces that needed to be culled. Possible values: THREE.CullFaceFront and THREE.CullFaceBack
+      // .shadowMapDebug -- Default is false. If set, then the shadowmaps get a specific color to identify which shadow is from which shadowmap.
+      // .shadowMapCascade -- Default is false. If Set, use cascaded shadowmaps. See cascaded shadowmaps for more information.
+      // .maxMorphTargets -- Default is 8. The maximum number of MorphTargets allowed in a shader. Keep in mind that the standard materials only allow 8 MorphTargets.
+      // .maxMorphNormals -- Default is 4. The maximum number of MorphNormals allowed in a shader. Keep in mind that the standard materials only allow 4 MorphNormals.
+      // .autoScaleCubemaps -- Default is true. If set, then Cubemaps are scaled, when they are bigger than the maximum size, to make sure that they aren't bigger than the maximum size.
+      // .renderPluginsPre -- An array with render plugins to be applied before rendering. Default is an empty array, or [].
+      // .renderPluginsPost -- An array with render plugins to be applied after rendering. Default is an empty array, or [].
+      // .info -- An object with a series of statistical information about the graphics board memory and the rendering process. Useful for debugging or just for the sake of curiosity. The object contains the following fields:
+      //  memory: programs geometries textures      render: calls vertices faces points 
+      // .shadowMapPlugin -- This contains the reference to the shadowMapPlugin. 
+      // .devicePixelRatio -- The pixel ration of the devices.
+
+      //Methods
+
+      //.getContext() -- Return the WebGL context.
+      // .supportsVertexTextures() -- Return a Boolean true if the context supports vertex textures.
+      // .setSize( width, height ) -- Resizes the output canvas to (width, height), and also sets the viewport to fit that size, starting in (0, 0).
+      // .setViewport( x, y, width, height ) -- Sets the viewport to render from (x, y) to (x + width, y + height).
+      // .setScissor( x, y, width, height ) -- Sets the scissor area from (x, y) to (x + width, y + height).
+      // .enableScissorTest( enable ) -- Enable the scissor test. When this is enabled, only the pixels within the defined scissor area will be affected by further renderer actions.
+      // .setClearColor( color, alpha ) -- Sets the clear color and opacity.
+      // .getClearColor() Color -- Returns a THREE.Color instance with the current clear color.
+      // .getClearAlpha() Float -- Returns a float with the current clear alpha. Ranges from 0 to 1.
+      // .clear( color, depth, stencil ) -- Tells the renderer to clear its color, depth or stencil drawing buffer(s). If no parameters are passed, no buffer will be cleared.
+      // .addPostPlugin( plugin ) -- Initialises the postprocessing plugin, and adds it to the renderPluginsPost array.
+      // .addPrePlugin( plugin ) -- Initialises the preprocessing plugin, and adds it to the renderPluginsPre array.
+      // .updateShadowMap( scene, camera ) -- scene — an instance of Scene / camera — an instance of Camera / Tells the shadow map plugin to update using the passed scene and camera parameters.
+      // .renderBufferImmediate( object, program, shading ) -- object — an instance of Object3D / program — an instance of shaderProgram / shading — an instance of Material / Render an immediate buffer. Gets called by renderImmediateObject.
+      // .renderBufferDirect( camera, lights, fog, material, geometryGroup, object ) -- Render a buffer geometry group using the camera and with the correct material.
+      // .renderBuffer( camera, lights, fog, material, geometryGroup, object ) -- Render a geometry group using the camera and with the correct material.
+      // .render( scene, camera, renderTarget, forceClear ) -- Render a scene using a camera. The render is done to the renderTarget (if specified) or to the canvas as usual. If forceClear is true, the depth, stencil and color buffers will be cleared before rendering even if the renderer's autoClear property is false. Even with forceClear set to true you can prevent certain buffers being cleared by setting either the .autoClearColor, .autoClearStencil or .autoClearDepth properties to false. 
+      // .renderImmediateObject( camera, lights, fog, material, object ) -- Renders an immediate Object using a camera.
+      // .initWebGLObjects( scene ) -- scene -- The scene to initialize. / This method initializes the scene. This means adding and removing all objects from the scene and updating them to make sure we have the correct webgl buffers.
+      // .initMaterial( material, lights, fog, object) -- material -- The material to initialize. / lights -- An array of lights that influence the material. / fog -- The fog of the scene. / object -- The object of the material that needs init. / This method initializes the material as a webgl program to be used.
+      // .setFaceCulling( cullFace, frontFace ) -- cullFace —- "back", "front", "front_and_back", or false. / frontFace —- "ccw" or "cw" / Used for setting the gl frontFace, cullFace states in the GPU, thus enabling/disabling face culling when rendering. If cullFace is false, culling will be disabled.
+      // .setDepthTest( depthTest ) -- depthTest -- The boolean to decide if depth of a fragment needs to be tested against the depth buffer . This sets, based on depthTest, whether or not the depth data needs to be tested against the depth buffer.
+      // .setDepthWrite( depthWrite ) -- depthWrite -- The boolean to decide if depth of a fragment needs to be kept. / This sets, based on depthWrite, whether or not the depth data needs to be written in the depth buffer. / 
+      // .setBlending( blending, blendEquation, blendSrc, blendDst ) -- blending -- A number indicating the blending mode. Possible value are THREE.NoBlending, THREE.NormalBlending, THREE.AdditiveBlending, THREE.SubtractiveBlending, THREE.MultiplyBlending or THREE.CustomBlending /blendEquation -- When blending is THREE.CustomBlending, then you can set the blendEquation. Possible values are THREE.AddEquation, THREE.SubtractEquation or THREE.ReverseSubtractEquation. / blendSrc -- When blending is THREE.CustomBlending, then you can set the blendSrc. Possible values are THREE.ZeroFactor, THREE.OneFactor,THREE.SrcColorFactor, THREE.OneMinusSrcColorFactor, THREE.SrcAlphaFactor, THREE.OneMinusSrcAlphaFactor, THREE.DstAlphaFactor, THREE.OneMinusDstAlphaFactor, THREE.DstColorFactor,THREE.OneMinusDstColorFactor or THREE.SrcAlphaSaturateFactor / blendDst -- When blending is THREE.CustomBlending, then you can set the blendDst. Possible values are THREE.ZeroFactor, THREE.OneFactor,THREE.SrcColorFactor, THREE.OneMinusSrcColorFactor, THREE.SrcAlphaFactor, THREE.OneMinusSrcAlphaFactor, THREE.DstAlphaFactor, THREE.OneMinusDstAlphaFactor, THREE.DstColorFactor,THREE.OneMinusDstColorFactor or THREE.SrcAlphaSaturateFactor / This method sets the correct blending.
+      // .setTexture( texture, slot ) -- texture -- The texture that needs to be set. / slot -- The number indicating which slot should be used by the texture. / This method sets the correct texture to the correct slot for the wegl shader. The slot number can be found as a value of the uniform of the sampler.
+      // .setRenderTarget( renderTarget ) -- renderTarget -- The renderTarget that needs to be activated. This method sets the active rendertarget.
+      // .supportsCompressedTextureS3TC() boolean -- This method returns true if the webgl implementation supports compressed textures of the format S3TC.
+      // .getMaxAnisotropy() number -- This returns the anisotropy level of the textures.
+      // .getPrecision() string -- This gets the precision used by the shaders. It returns "highp","mediump" or "lowp".
+      // .setMaterialFaces(material) -- material -- The material with side that shouldn't be culled. / This sets which side needs to be culled in the webgl renderer.
+      // .supportsStandardDerivatives() boolean -- This method returns true if the webgl implementation supports standard derivatives.
+      // .supportsFloatTextures() boolean -- This method returns true if the webgl implementation supports float textures.
+      // .clearTarget(renderTarget, color, depth, stencil) -- renderTarget -- The renderTarget that needs to be cleared. / color -- If set, then the color gets cleared. / depth -- If set, then the depth gets cleared. / stencil -- If set, then the stencil gets cleared. / This method clears a rendertarget. To do this, it activates the rendertarget.
+
+      var renderer = new THREE.WebGLRenderer();
+  		renderer.setClearColor(0xEEEEEE);
+  		renderer.setSize(window.innerWidth, window.innerHeight);
+
+      //*********** ADD HELPER ********************
+      // Set Axis Helper (SIZE) The X axis is red. The Y axis is green. The Z axis is blue.
+  		var axes = new THREE.AxisHelper(200);
+  		scene.add(axes);
+
+      // Set Grid Helper (SIZE, STEP)
+      var gridHelper = new THREE.GridHelper( 100, 5 );    
+      // setcolors(colorcenterline, colorgrid)
+      gridHelper.setColors("Red","Grey");
+      scene.add( gridHelper );
+
+
+      // ***************** ADD GEOMETRY *****************
+      // Geometry contains the vertices and faces data of a geometric object
+      var geometry = new THREE.BoxGeometry(1,1,1);
+
+      // ***************** ADD Material *****************
+      // Material colors / paints / skins the geometry
+      var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+
+      // ***************** ADD Mesh *****************
+      // Mesh combines Geometry and Material to create an object
+
+      var cube = new THREE.Mesh( geometry, material );
+
+      // default coordinates are 0,0,0
+      scene.add( cube );
+
+      camera.position.z = 5;
+      camera.position.x = 5;
+      camera.position.y = 5;
+      camera.lookAt(new THREE.Vector3( 0,0,0 ));
+
+
+  		$("#WebGL-output").append(renderer.domElement);
+  		
+      // render loop. function calls itself to continuously render 60 fps and pauses when tab is not active.
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+
+        // Put changes that need to happen each frame here:
+        cube.rotation.x += 0.1;
+        cube.rotation.y += 0.1;
+      }
+      
+      render();
+
+  	});
+
+	</script>
+
+
+
+
+</body>
+</html>
