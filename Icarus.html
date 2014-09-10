@@ -72,7 +72,7 @@ function init()
 
 	// the camera defaults to position (0,0,0)
 	// 	so pull it back (z = 400) and up (y = 100) and set the angle towards the scene origin
-	camera.position.set(0,5,80);
+	camera.position.set(0,5,-20);
 	camera.lookAt(scene.position);	
 	
 	//////////////
@@ -166,6 +166,7 @@ function init()
     mat.map = texture;
     mat.bumpMap = bump;
     mat.bumpScale = 0.2;
+    mat.side = THREE.DoubleSide;
 
     ///////////////////////
     // CREATE TOWER MESH //
@@ -173,7 +174,7 @@ function init()
 
     tower = new THREE.Mesh( TowerGeometry, mat );
     tower.position.set( 0, 25, 0 );
-    //scene.add( tower );
+    scene.add( tower );
 
 	// create a set of coordinate axes to help orient user
 	//    specify length in pixels in each direction
@@ -191,9 +192,9 @@ var pivot1 = new THREE.Object3D();
 var pivot2 = new THREE.Object3D();
 var pivot3 = new THREE.Object3D();
 
-pivot1.rotation.z = 0;
-pivot2.rotation.z = 2 * Math.PI / 3;
-pivot3.rotation.z = 4 * Math.PI / 3;
+pivot1.rotation.y = 0;
+pivot2.rotation.y = 2 * Math.PI / 3;
+pivot3.rotation.y = 4 * Math.PI / 3;
 
 parent.add( pivot1 );
 parent.add( pivot2 );
@@ -209,9 +210,12 @@ var mesh1 = new THREE.Mesh( veryBasicGeometry, veryBasicMaterial );
 var mesh2 = new THREE.Mesh( veryBasicGeometry, veryBasicMaterial );
 var mesh3 = new THREE.Mesh( veryBasicGeometry, veryBasicMaterial );
 
-mesh1.position.x = 10;
-mesh2.position.x = 10;
-mesh3.position.x = 10;
+mesh1.position.x = 15;
+mesh2.position.x = 15;
+mesh3.position.x = 15;
+
+mesh1.position.y = mesh2.position.y = mesh3.position.y = 10;
+
 
 pivot1.add( mesh1 );
 pivot2.add( mesh2 );
@@ -266,9 +270,7 @@ function animate()
     requestAnimationFrame( animate );
     //camera.position.y += 0.5;
     //camera.lookAt(scene.position);
-	
-
-    parent.rotation.x += 0.01;
+	parent.rotation.y -= 0.01;
 
 	render();		
 	update();
